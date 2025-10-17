@@ -11,6 +11,7 @@ export interface IEvaluationFormH extends Document {
   Name: string;
   parentType: string;
   department: string;
+  calendarYear: string; // سال تقویمی
   trainingYears: ITrainingYear[];
   averageScore: number;
   shiftDepartment: string;
@@ -33,6 +34,7 @@ const EvaluationFormHSchema = new Schema<IEvaluationFormH>(
     Name: { type: String, required: true },
     parentType: { type: String, required: true },
     department: { type: String, required: true },
+    calendarYear: { type: String, default: "" },
     trainingYears: [TrainingYearSchema],
     averageScore: { type: Number, default: 0 },
     shiftDepartment: { type: String, default: "" },

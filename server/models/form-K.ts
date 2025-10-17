@@ -23,6 +23,7 @@ export interface IMonographEvaluation extends Document {
   department: string;
   trainingYear: string;
   startYear: string;
+  calendarYear: string; // سال تقویمی
   date: string;
   evaluations: IMonographRow[];
 }
@@ -48,6 +49,7 @@ const MonographEvaluationSchema: Schema = new Schema({
   department: { type: String, default: "" },
   trainingYear: { type: String, default: "" },
   startYear: { type: String, default: "" },
+  calendarYear: { type: String, default: "" },
   date: { type: String, default: "" },
   evaluations: { type: [MonographRowSchema], default: [] },
 }, { timestamps: true });

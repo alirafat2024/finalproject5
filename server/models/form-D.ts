@@ -21,6 +21,7 @@ export interface IConferenceEvaluation extends Document {
   parentType: string;
   department: string;
   trainingYear: string;
+  calendarYear: string; // سال تقویمی
   conferences: IConferenceItem[];
   notes?: boolean;
   departmentHead?: string;
@@ -44,6 +45,7 @@ const ConferenceEvaluationSchema = new Schema<IConferenceEvaluation>(
     parentType: { type: String, required: true },
     department: { type: String, required: true },
     trainingYear: { type: String, required: true },
+    calendarYear: { type: String, default: "" },
     conferences: [ConferenceItemSchema],
     notes: { type: Boolean, default: false },
     departmentHead: { type: String, default: "" },

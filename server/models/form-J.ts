@@ -15,6 +15,7 @@ export interface ITeacherActivity extends Document {
   name: string;                        // نام ترینر
   parentType: string;                  // نام پدر
   trainingYear: string;                // سال تریننگ
+  calendarYear: string;                // سال تقویمی
   teachers: string[];                  // نام استادها
   activities: IActivity[];             // لیست فعالیت‌ها
   createdAt: Date;
@@ -46,6 +47,7 @@ const TeacherActivitySchema = new Schema<ITeacherActivity>(
     name: { type: String, required: true },
     parentType: { type: String, required: true },
     trainingYear: { type: String, required: true },
+    calendarYear: { type: String, default: "" },
     teachers: {
       type: [String],
       validate: {

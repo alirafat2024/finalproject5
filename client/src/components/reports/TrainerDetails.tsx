@@ -37,6 +37,7 @@ export default function TrainerDetails({
   trainerId,
   onClose,
 }: TrainerDetailsProps) {
+  const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [selectedForm, setSelectedForm] = useState<string | null>(null);
   const [showActions, setShowActions] = useState(false);
 
@@ -59,8 +60,16 @@ export default function TrainerDetails({
   if (error) return <div>خطا در بارگذاری ترینر</div>;
   if (!trainer) return <div>ترینر پیدا نشد.</div>;
 
+  // استخراج سال‌های موجود از trainingHistory
+  const availableYears = trainer.trainerProgress?.trainingHistory?.map((history: any) => ({
+    label: history.yearLabel,
+    academicYear: history.academicYear,
+    calendarYear: history.startYear || history.academicYear
+  })) || [];
+
   // دیباگ دیتا
   console.log("Trainer data:", trainer);
+  console.log("Available years:", availableYears);
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
@@ -84,54 +93,86 @@ export default function TrainerDetails({
           </DialogTitle>
         </DialogHeader>
 
-        {/* ردیف عکس و فرم‌ها */}
-        <div className="flex items-center justify-between mb-4 w-full mt-6">
-          <div className="flex-shrink-0 w-24 h-24 rounded-full border border-slate-300 overflow-hidden">
-            {trainer.profileImageUrl ? (
-              <img
-                src={trainer.profileImageUrl}
-                alt={`${trainer.name} ${trainer.lastName}`}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-slate-200 text-slate-500">
-                عکس
-              </div>
+        {/* انتخاب سال */}
+        {availableYears.length > 0 && (
+          <div className="mb-6 border-b border-slate-200 pb-4">
+            <h4 className="font-medium text-slate-900 mb-3">انتخاب سال تحصیلی:</h4>
+            <div className="flex flex-wrap gap-3">
+              {availableYears.map((yearData: any) => (
+                <Button
+                  key={yearData.calendarYear}
+                  onClick={() => {
+                    setSelectedYear(yearData.calendarYear);
+                    setSelectedForm(null);
+                  }}
+                  className={`px-6 py-3 rounded-lg text-sm font-semibold transition-all ${
+                    selectedYear === yearData.calendarYear
+                      ? "bg-hospital-green-600 text-white shadow-lg"
+                      : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                  }`}
+                >
+                  {yearData.yearLabel} ({yearData.calendarYear})
+                </Button>
+              ))}
+            </div>
+            {!selectedYear && (
+              <p className="text-sm text-orange-600 mt-2">
+                لطفاً ابتدا یک سال را انتخاب کنید تا فورم‌ها نمایش داده شوند.
+              </p>
             )}
           </div>
+        )}
 
-          <div className="flex-1 flex justify-center space-x-4 overflow-x-auto mx-4">
-            {FORM_TYPES.map((ft) => (
-              <Button
-                key={ft.type}
-                onClick={() => setSelectedForm(ft.type)}
-                className={`w-16 h-16 rounded-full flex items-center justify-center text-sm font-semibold
-                ${
-                  selectedForm === ft.type
-                    ? "bg-blue-500 text-white"
-                    : "bg-slate-100 text-slate-700"
-                }
-                hover:bg-slate-200 transition`}
-                title={ft.name}
+        {/* ردیف عکس و فرم‌ها */}
+        {selectedYear && (
+          <div className="flex items-center justify-between mb-4 w-full mt-6">
+            <div className="flex-shrink-0 w-24 h-24 rounded-full border border-slate-300 overflow-hidden">
+              {trainer.profileImageUrl ? (
+                <img
+                  src={trainer.profileImageUrl}
+                  alt={`${trainer.name} ${trainer.lastName}`}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-slate-200 text-slate-500">
+                  عکس
+                </div>
+              )}
+            </div>
+
+            <div className="flex-1 flex justify-center space-x-4 overflow-x-auto mx-4">
+              {FORM_TYPES.map((ft) => (
+                <Button
+                  key={ft.type}
+                  onClick={() => setSelectedForm(ft.type)}
+                  className={`w-16 h-16 rounded-full flex items-center justify-center text-sm font-semibold
+                  ${
+                    selectedForm === ft.type
+                      ? "bg-blue-500 text-white"
+                      : "bg-slate-100 text-slate-700"
+                  }
+                  hover:bg-slate-200 transition`}
+                  title={ft.name}
+                >
+                  {ft.type}
+                </Button>
+              ))}
+            </div>
+
+            <div className="flex-shrink-0 flex gap-2">
+              <Button 
+                size="sm" 
+                className="bg-hospital-green-600 text-white hover:bg-hospital-green-700"
+                onClick={() => setShowActions(!showActions)}
               >
-                {ft.type}
+                اکشن‌ها ({actions.length})
               </Button>
-            ))}
+              <Button size="sm" className="bg-red-500 text-white hover:bg-red-600">
+                Disciplinary Actions
+              </Button>
+            </div>
           </div>
-
-          <div className="flex-shrink-0 flex gap-2">
-            <Button 
-              size="sm" 
-              className="bg-hospital-green-600 text-white hover:bg-hospital-green-700"
-              onClick={() => setShowActions(!showActions)}
-            >
-              اکشن‌ها ({actions.length})
-            </Button>
-            <Button size="sm" className="bg-red-500 text-white hover:bg-red-600">
-              Disciplinary Actions
-            </Button>
-          </div>
-        </div>
+        )}
 
         {/* اطلاعات ترینر */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-200 pt-4 mt-4">

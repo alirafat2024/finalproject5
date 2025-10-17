@@ -5,6 +5,7 @@ export interface IEvaluationFormE extends Document {
   Name: string;
   parentType: string;
   trainingYear: string;
+  calendarYear: string; // سال تقویمی
   incidentTitle: string;
   date: string;
   scores: { score: string; teacherName: string; notes?: string }[]; // 👈 آرایه
@@ -17,6 +18,7 @@ const EvaluationFormESchema = new Schema<IEvaluationFormE>(
     Name: { type: String, required: true },
     parentType: { type: String, required: true },
     trainingYear: { type: String, required: true },
+    calendarYear: { type: String, default: "" },
     incidentTitle: { type: String, required: true },
     date: { type: String, required: true },
     scores: [

@@ -10,6 +10,7 @@ export interface IMonographEvaluationForm extends Document {
   department: string;
   trainingYear: string;
   startYear: string;
+  calendarYear: string; // سال تقویمی
   date: string;
   chef: string;
   departmentHead: string;
@@ -47,6 +48,7 @@ const MonographEvaluationFormSchema: Schema = new Schema(
     department: { type: String, required: true },
     trainingYear: { type: String, required: true },
     startYear: { type: String, required: true },
+    calendarYear: { type: String, default: "" },
     date: { type: String, required: true },
     chef: { type: String, required: true },
     departmentHead: { type: String, required: true },

@@ -26,6 +26,7 @@ export interface IRotationForm extends Document {
     parentName: string;
     department: string;
     trainingYear: string;
+    calendarYear: string; // سال تقویمی
     rotationName: string;
     rotationFrom: string;
     rotationTo: string;
@@ -62,6 +63,7 @@ const RotationFormSchema = new Schema<IRotationForm>({
     parentName: { type: String, default: "" },
     department: { type: String, default: "" },
     trainingYear: { type: String, required: true },
+    calendarYear: { type: String, default: "" },
     rotationName: { type: String, required: true }, // فقط اینجا
     rotationFrom: { type: String, default: "" },
     rotationTo: { type: String, default: "" },

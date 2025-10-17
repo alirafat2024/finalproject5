@@ -59,13 +59,18 @@ export class EvaluationFormEController {
     }
   }
 
-  // 🔹 دریافت همه فرم‌ها یا فیلتر بر اساس trainerId
+  // 🔹 دریافت همه فرم‌ها یا فیلتر بر اساس trainerId و calendarYear
   static async getAll(req: Request, res: Response) {
     try {
-      const { trainerId } = req.query;
-      const filter = trainerId
-        ? { trainer: new mongoose.Types.ObjectId(trainerId as string) }
-        : {};
+      const { trainerId, calendarYear } = req.query;
+      const filter: any = {};
+      
+      if (trainerId) {
+        filter.trainer = new mongoose.Types.ObjectId(trainerId as string);
+      }
+      if (calendarYear) {
+        filter.calendarYear = calendarYear as string;
+      }
 
       const forms = await EvaluationFormE.find(filter)
         .populate("trainer")

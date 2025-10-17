@@ -223,7 +223,11 @@ export const TrainerController = {
 
       for (let i = 0; i < formModels.length; i++) {
         const formKey = `form${String.fromCharCode(67 + i)}`; // C, D, E, ...
-        const formDoc = await formModels[i].create({ trainer: newTrainer._id, year: "سال اول" });
+        const formDoc = await (formModels[i] as any).create({ 
+          trainer: newTrainer._id, 
+          year: "سال اول",
+          calendarYear: year
+        });
         formsMap[formKey] = formDoc._id;
       }
 
@@ -354,7 +358,11 @@ export const TrainerController = {
       const formsMap: Record<string, Types.ObjectId> = {};
       for (let i = 0; i < formModels.length; i++) {
         const formKey = `form${String.fromCharCode(67 + i)}`;
-        const formDoc = await formModels[i].create({ trainer: mongoId, year: nextYear });
+        const formDoc = await (formModels[i] as any).create({ 
+          trainer: mongoId, 
+          year: nextYear,
+          calendarYear: nextAcademic
+        });
         formsMap[formKey] = formDoc._id;
       }
 

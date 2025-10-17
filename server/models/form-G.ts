@@ -18,6 +18,7 @@ interface IPersonalInfo {
   parentType: string;
   trainingYear: string;
   year: string;
+  calendarYear: string; // سال تقویمی
   department: string;
 }
 
@@ -44,6 +45,7 @@ const PersonalInfoSchema = new Schema<IPersonalInfo>({
   parentType: { type: String, required: true },
   trainingYear: { type: String, required: true },
   year: { type: String, required: true },
+  calendarYear: { type: String, default: "" },
   department: { type: String, required: true },
 });
 
