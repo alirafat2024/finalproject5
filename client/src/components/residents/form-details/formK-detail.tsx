@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 
 interface FormKDetailsProps {
   trainerId: string;
+  trainingYear?: string;
   onClose?: () => void;
 }
 
@@ -36,7 +37,7 @@ interface FormK {
   programHead?: string;
 }
 
-export default function FormKDetails({ trainerId, onClose }: FormKDetailsProps) {
+export default function FormKDetails({ trainerId, trainingYear, onClose }: FormKDetailsProps) {
   const [data, setData] = useState<FormK | null>(null);
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -47,7 +48,10 @@ export default function FormKDetails({ trainerId, onClose }: FormKDetailsProps) 
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/monographEvaluation?trainerId=${trainerId}`);
+        const url = trainingYear 
+          ? `/api/monographEvaluation?trainerId=${trainerId}&year=${trainingYear}`
+          : `/api/monographEvaluation?trainerId=${trainerId}`;
+        const res = await fetch(url);
         if (!res.ok) throw new Error("فرمی برای این ترینر موجود نیست");
         const result = await res.json();
         if (!result) setData(null);

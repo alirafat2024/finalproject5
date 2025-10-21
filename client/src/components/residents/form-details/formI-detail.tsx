@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 
 interface RotationFormViewProps {
   trainerId: string;
+  trainingYear?: string;
 }
 
 const persianTopics = [
@@ -54,7 +55,7 @@ type RotationForm = {
   rows: RotationRow[];
 };
 
-export default function RotationFormView({ trainerId }: RotationFormViewProps) {
+export default function RotationFormView({ trainerId, trainingYear }: RotationFormViewProps) {
   const [forms, setForms] = useState<RotationForm[]>([]);
   const [editing, setEditing] = useState(false);
   const printRef = useRef<HTMLDivElement>(null);
@@ -62,9 +63,10 @@ export default function RotationFormView({ trainerId }: RotationFormViewProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(
-          `http://localhost:5000/api/rotation-form/${trainerId}`
-        );
+        const url = trainingYear 
+          ? `http://localhost:5000/api/rotation-form/${trainerId}?year=${trainingYear}`
+          : `http://localhost:5000/api/rotation-form/${trainerId}`;
+        const res = await fetch(url);
         if (!res.ok) throw new Error("فرمی برای این ترینر موجود نیست");
         const data = await res.json();
         setForms(data);

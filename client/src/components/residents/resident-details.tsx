@@ -8,6 +8,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 // فرم‌های شما همان قبلی می‌مانند:
 import FormCDetails from "@/components/residents/form-details/formC-detail";
 import FormDDetails from "@/components/residents/form-details/formD-detail";
@@ -43,6 +50,7 @@ export default function TrainerDetails({
   onClose,
 }: TrainerDetailsProps) {
   const [selectedForm, setSelectedForm] = useState<string | null>(null);
+  const [selectedYear, setSelectedYear] = useState<string>("");
 
   // اینجا از API ترینر استفاده می‌کنیم
   const { data: trainer, isLoading } = useQuery({
@@ -53,8 +61,35 @@ export default function TrainerDetails({
   if (isLoading) return <div>در حال بارگذاری...</div>;
   if (!trainer) return <div>ترینر پیدا نشد.</div>;
 
+  // دریافت لیست سال‌های موجود از trainingHistory
+  const availableYears = trainer.trainerProgress?.trainingHistory?.map(
+    (history: any) => history.yearLabel
+  ) || [];
+  
+  // تنظیم سال پیش‌فرض به سال فعلی
+  if (selectedYear === "" && availableYears.length > 0) {
+    setSelectedYear(trainer.trainerProgress?.currentTrainingYear || availableYears[0]);
+  }
+
   return (
     <div className="relative bg-white rounded-lg shadow-lg border border-slate-200 p-6">
+      {/* انتخاب سال آموزشی */}
+      <div className="mb-4 flex items-center gap-3">
+        <label className="text-sm font-medium text-slate-700">انتخاب سال آموزشی:</label>
+        <Select value={selectedYear} onValueChange={setSelectedYear}>
+          <SelectTrigger className="w-48">
+            <SelectValue placeholder="سال را انتخاب کنید" />
+          </SelectTrigger>
+          <SelectContent>
+            {availableYears.map((year: string) => (
+              <SelectItem key={year} value={year}>
+                {year}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* ردیف بالا: عکس + دکمه فرم‌ها + اکشن */}
       <div className="flex items-center justify-between mb-4 w-full">
         <div className="flex-shrink-0 w-24 h-24 rounded-full border border-slate-300 overflow-hidden">
@@ -141,49 +176,55 @@ export default function TrainerDetails({
                   p-4 bg-white rounded-lg"
         >
           <DialogHeader>
-            <DialogTitle>جزئیات فرم {selectedForm}</DialogTitle>
+            <DialogTitle>جزئیات فرم {selectedForm} - {selectedYear}</DialogTitle>
           </DialogHeader>
 
           {selectedForm === "C" && (
             <FormCDetails
               trainerId={trainerId}
+              trainingYear={selectedYear}
               onClose={() => setSelectedForm(null)}
             />
           )}
-          {selectedForm === "I" && <RotationForm trainerId={trainerId} />}
+          {selectedForm === "I" && <RotationForm trainerId={trainerId} trainingYear={selectedYear} />}
           {selectedForm === "J" && (
-            <TeacherActivityForm trainerId={trainerId} />
+            <TeacherActivityForm trainerId={trainerId} trainingYear={selectedYear} />
           )}
 
-          {selectedForm === "F" && <ChecklistDisplay trainerId={trainerId} />}
+          {selectedForm === "F" && <ChecklistDisplay trainerId={trainerId} trainingYear={selectedYear} />}
           {selectedForm === "D" && (
             <FormDDetails
               trainerId={trainerId}
+              trainingYear={selectedYear}
               onClose={() => setSelectedForm(null)}
             />
           )}
           {selectedForm === "E" && (
             <FormEDetails
               trainerId={trainerId}
+              trainingYear={selectedYear}
               onClose={() => setSelectedForm(null)}
             />
           )}
           {selectedForm === "G" && (
             <FormGDetails
               trainerId={trainerId}
+              trainingYear={selectedYear}
               onClose={() => setSelectedForm(null)}
             />
           )}
           {selectedForm === "H" && (
             <FormHDetails
               trainerId={trainerId}
+              trainingYear={selectedYear}
               onClose={() => setSelectedForm(null)}
             />
           )}
 
           {selectedForm === "K" && (
             <FormKDetails
-              trainerId={trainerId} // یا trainerId
+              trainerId={trainerId}
+              trainingYear={selectedYear}
               onClose={() => setSelectedForm(null)}
             />
           )}

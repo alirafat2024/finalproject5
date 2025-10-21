@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 
 interface FormGDetailsProps {
   trainerId: string;
+  trainingYear?: string;
   onClose?: () => void;
 }
 
@@ -37,7 +38,7 @@ interface FormG {
   hospitalHead?: string;
 }
 
-export default function FormGDetails({ trainerId, onClose }: FormGDetailsProps) {
+export default function FormGDetails({ trainerId, trainingYear, onClose }: FormGDetailsProps) {
   const [data, setData] = useState<FormG | null>(null);
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -48,7 +49,10 @@ export default function FormGDetails({ trainerId, onClose }: FormGDetailsProps) 
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/evaluationFormG?trainerId=${trainerId}`);
+        const url = trainingYear 
+          ? `/api/evaluationFormG?trainerId=${trainerId}&year=${trainingYear}`
+          : `/api/evaluationFormG?trainerId=${trainerId}`;
+        const res = await fetch(url);
         if (res.status === 404) {
           setData(null);
           return;

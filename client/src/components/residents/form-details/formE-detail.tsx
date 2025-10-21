@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 
 interface FormEDetailsProps {
   trainerId: string;
+  trainingYear?: string;
   onClose?: () => void;
 }
 
@@ -25,7 +26,7 @@ interface FormE {
   averageScore: number;
 }
 
-export default function FormEDetails({ trainerId, onClose }: FormEDetailsProps) {
+export default function FormEDetails({ trainerId, trainingYear, onClose }: FormEDetailsProps) {
   const [data, setData] = useState<FormE | null>(null);
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,7 +36,10 @@ export default function FormEDetails({ trainerId, onClose }: FormEDetailsProps) 
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/evaluationFormE?trainerId=${trainerId}`);
+        const url = trainingYear 
+          ? `/api/evaluationFormE?trainerId=${trainerId}&year=${trainingYear}`
+          : `/api/evaluationFormE?trainerId=${trainerId}`;
+        const res = await fetch(url);
         if (!res.ok) throw new Error("خطا در دریافت داده‌ها");
         const result = await res.json();
         const form = Array.isArray(result) ? result[0] : result;

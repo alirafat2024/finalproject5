@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 
 interface FormDDetailsProps {
   trainerId: string;
+  trainingYear?: string;
   onClose?: () => void;
 }
 
@@ -29,7 +30,7 @@ interface FormD {
   hospitalHead?: string;
 }
 
-export default function FormDDetails({ trainerId, onClose }: FormDDetailsProps) {
+export default function FormDDetails({ trainerId, trainingYear, onClose }: FormDDetailsProps) {
   const [data, setData] = useState<FormD | null>(null);
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -40,7 +41,10 @@ export default function FormDDetails({ trainerId, onClose }: FormDDetailsProps) 
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/conference?trainerId=${trainerId}`);
+        const url = trainingYear 
+          ? `/api/conference?trainerId=${trainerId}&year=${trainingYear}`
+          : `/api/conference?trainerId=${trainerId}`;
+        const res = await fetch(url);
         if (!res.ok) throw new Error("فرمی برای این ترینر موجود نیست");
         const result = await res.json();
         if (Array.isArray(result) && result.length > 0) setData(result[0]);

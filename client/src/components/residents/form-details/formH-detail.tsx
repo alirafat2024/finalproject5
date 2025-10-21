@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 
 interface FormHDetailsProps {
   trainerId: string;
+  trainingYear?: string;
   onClose?: () => void;
 }
 
@@ -29,7 +30,7 @@ interface FormH {
   hospitalHead?: string;
 }
 
-export default function FormHDetails({ trainerId, onClose }: FormHDetailsProps) {
+export default function FormHDetails({ trainerId, trainingYear, onClose }: FormHDetailsProps) {
   const [data, setData] = useState<FormH | null>(null);
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,10 @@ export default function FormHDetails({ trainerId, onClose }: FormHDetailsProps) 
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/evaluationFormH?trainerId=${trainerId}`);
+        const url = trainingYear 
+          ? `/api/evaluationFormH?trainerId=${trainerId}&year=${trainingYear}`
+          : `/api/evaluationFormH?trainerId=${trainerId}`;
+        const res = await fetch(url);
         if (!res.ok) throw new Error("خطا در دریافت فرم H");
         const result = await res.json();
         const formData = Array.isArray(result) ? result[0] : result;

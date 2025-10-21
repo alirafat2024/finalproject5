@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 
 interface TeacherActivityFormProps {
   trainerId: string;
+  trainingYear?: string;
   onClose?: () => void;
 }
 
@@ -43,6 +44,7 @@ const Check: React.FC<{ on: boolean }> = ({ on }) => (
 
 export default function TeacherActivityForm({
   trainerId,
+  trainingYear,
 }: TeacherActivityFormProps) {
   const [data, setData] = useState<FormJ | null>(null);
   const [loading, setLoading] = useState(true);
@@ -53,9 +55,10 @@ export default function TeacherActivityForm({
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          `http://localhost:5000/api/teacher-activities/${trainerId}`
-        );
+        const url = trainingYear 
+          ? `http://localhost:5000/api/teacher-activities/${trainerId}?year=${trainingYear}`
+          : `http://localhost:5000/api/teacher-activities/${trainerId}`;
+        const res = await fetch(url);
         if (!res.ok) throw new Error("فرمی برای این ترینر موجود نیست");
         const result = await res.json();
         setData(result);

@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 
 interface FormCDetailsProps {
   trainerId: string;
+  trainingYear?: string;
   onClose?: () => void;
 }
 
@@ -33,6 +34,7 @@ interface FormC {
 
 export default function FormCDetails({
   trainerId,
+  trainingYear,
   onClose,
 }: FormCDetailsProps) {
   const [data, setData] = useState<FormC | null>(null);
@@ -46,7 +48,10 @@ export default function FormCDetails({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/monograph?trainerId=${trainerId}`);
+        const url = trainingYear 
+          ? `/api/monograph?trainerId=${trainerId}&year=${trainingYear}`
+          : `/api/monograph?trainerId=${trainerId}`;
+        const res = await fetch(url);
 
         if (!res.ok) {
           // اگر خطایی بود ولی نه شبکه، فقط داده را null قرار بده

@@ -31,11 +31,12 @@ interface Checklist {
 
 interface ChecklistDisplayProps {
   trainerId: string;
+  trainingYear?: string;
 }
 
 const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
-export default function ChecklistDisplay({ trainerId }: ChecklistDisplayProps) {
+export default function ChecklistDisplay({ trainerId, trainingYear }: ChecklistDisplayProps) {
   const [checklists, setChecklists] = useState<Checklist[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [tempData, setTempData] = useState<Record<string, Checklist>>({});
@@ -45,7 +46,10 @@ export default function ChecklistDisplay({ trainerId }: ChecklistDisplayProps) {
     if (!trainerId) return;
     const fetchChecklists = async () => {
       try {
-        const res = await fetch(`/api/checklists?trainerId=${trainerId}`);
+        const url = trainingYear 
+          ? `/api/checklists?trainerId=${trainerId}&year=${trainingYear}`
+          : `/api/checklists?trainerId=${trainerId}`;
+        const res = await fetch(url);
         if (!res.ok) throw new Error("خطا در دریافت داده‌ها");
         const data: Checklist[] = await res.json();
         setChecklists(data);
