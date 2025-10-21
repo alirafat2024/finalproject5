@@ -353,16 +353,123 @@ export const TrainerController = {
       const lastAcademic = progress.trainingHistory.at(-1)?.academicYear || new Date().getFullYear().toString();
       const nextAcademic = (Number(lastAcademic) + 1).toString();
 
+      // دریافت اطلاعات ترینر برای پاس کردن به فرم‌ها
+      const trainer = await TrainerModel.findById(mongoId).exec();
+      if (!trainer) return res.status(404).json({ message: "ترینر یافت نشد." });
+
       // ایجاد فرم‌های خالی برای سال بعد
       const formModels = [FormC, FormD, FormE, FormF, FormG, FormH, FormI, FormJ, FormK];
       const formsMap: Record<string, Types.ObjectId> = {};
       for (let i = 0; i < formModels.length; i++) {
         const formKey = `form${String.fromCharCode(67 + i)}`;
-        const formDoc = await (formModels[i] as any).create({ 
-          trainer: mongoId, 
+        const formIndex = i; // 0=FormC, 1=FormD, etc.
+        
+        // آماده‌سازی داده‌های مشترک
+        const baseData: any = { 
+          trainer: mongoId,
+          trainerId: mongoId, 
           year: nextYear,
-          calendarYear: nextAcademic
-        });
+          calendarYear: nextAcademic,
+          trainingYear: nextYear,
+          name: trainer.name,
+          lastName: trainer.lastName,
+          parentType: trainer.parentType,
+          parentName: trainer.parentName,
+          department: trainer.department,
+          idNumber: trainer.idNumber,
+        };
+        
+        // داده‌های خاص هر فرم
+        let formData: any = { ...baseData };
+        
+        if (formIndex === 0) { // FormC
+          formData = {
+            ...baseData,
+            startYear: nextAcademic,
+            date: new Date().toISOString().split('T')[0],
+            chef: "",
+            departmentHead: "",
+            hospitalHead: "",
+            evaluations: []
+          };
+        } else if (formIndex === 1) { // FormD
+          formData = {
+            ...baseData,
+            conferences: []
+          };
+        } else if (formIndex === 2) { // FormE
+          formData = {
+            ...baseData,
+            Name: trainer.name,
+            incidentTitle: "",
+            date: new Date().toISOString().split('T')[0],
+            scores: [],
+            averageScore: "0"
+          };
+        } else if (formIndex === 3) { // FormF
+          formData = {
+            ...baseData,
+            sections: []
+          };
+        } else if (formIndex === 4) { // FormG
+          formData = {
+            ...baseData,
+            personalInfo: {
+              Name: trainer.name,
+              parentType: trainer.parentType,
+              trainingYear: nextYear,
+              year: nextAcademic,
+              calendarYear: nextAcademic,
+              department: trainer.department
+            },
+            scores: [],
+            averageScore: 0
+          };
+        } else if (formIndex === 5) { // FormH
+          formData = {
+            ...baseData,
+            Name: trainer.name,
+            trainingYears: [],
+            averageScore: 0,
+            shiftDepartment: "",
+            programDirector: ""
+          };
+        } else if (formIndex === 6) { // FormI
+          formData = {
+            ...baseData,
+            header: {
+              name: trainer.name,
+              parentType: trainer.parentType,
+              parentName: trainer.parentName,
+              department: trainer.department,
+              trainingYear: nextYear,
+              rotationName: "",
+              rotationFrom: "",
+              rotationTo: "",
+              date: new Date().toISOString().split('T')[0]
+            },
+            persianRows: [],
+            rows: []
+          };
+        } else if (formIndex === 7) { // FormJ
+          formData = {
+            ...baseData,
+            teachers: [],
+            activities: []
+          };
+        } else if (formIndex === 8) { // FormK
+          formData = {
+            ...baseData,
+            startYear: nextAcademic,
+            date: new Date().toISOString().split('T')[0],
+            chef: "",
+            departmentHead: "",
+            hospitalHead: "",
+            evaluations: []
+          };
+        }
+        
+        const formDoc = await (formModels[i] as any).create(formData);
         formsMap[formKey] = formDoc._id;
       }
 
