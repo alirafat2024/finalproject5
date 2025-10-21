@@ -60,3 +60,42 @@
   - Each form type now gets its specific required fields
   - Server restarted successfully with fix applied
   - Trainer promotion should now work correctly
+[x] 22. Implemented Year Selection Feature for Forms - October 21, 2025:
+  - Added year selector dropdown in TrainerDetails component showing all training years from trainingHistory
+  - Updated all form components (FormC through FormK) to accept trainingYear prop
+  - Modified all form API calls to include calendarYear parameter in query string
+  - Updated all backend controllers and routes to filter forms by calendarYear when provided:
+    - Form C (monograph): Added calendarYear filtering
+    - Form D (conference): Added calendarYear filtering
+    - Form E (evaluation): Added calendarYear filtering
+    - Form F (checklists): Added calendarYear filtering
+    - Form G (evaluation): Added calendarYear filtering
+    - Form H (evaluation): Added calendarYear filtering
+    - Form I (rotation): Added calendarYear filtering
+    - Form J (teacher activities): Added calendarYear filtering
+    - Form K (monograph evaluation): Added calendarYear filtering
+  - System now allows users to select which training year to view when accessing forms
+  - All changes tested with server restart - no errors
+  - Feature ready for use
+<system_log_status>
+The system has the following logs available:
+<workflow_logs>
+Found 1 workflow
+workflow: Server (running) has new logs.
+</workflow_logs>
+<browser_console_logs>
+Found new browser console logs
+</browser_console_logs>
+Use the refresh_all_logs tool to view the latest logs. Only check logs when testing, debugging, or before completing a task. Remember to read the entire file or grep over it if needed.
+</system_log_status>
+<system_reminder>
+- This is a reminder that your todo list is currently completed. DO NOT mention this to the user explicitly because they are already aware. If you are working on new tasks that would benefit from a todo list, please use the write_task_list tool to create a new list. If not, please feel free to ignore.
+- If the app is in a state ready for publishing, you can suggest to the user to deploy (publish) their app.
+- Before returning to the user, you __must__:
+  - Make sure work is structured and organized, do not make large files, and put source code in a structured codebase. Do **not** litter the root directory with source code files.
+  - Delete any unused/temporary files, folders, workflows, or packages.
+- Maximize parallel tool calls for speed and efficiency: whenever you're calling multiple tools that don't depend on each other's results, bundle all independent calls into a single function_calls block following the <use_parallel_tool_calls> guidelines.
+- Never refer to tool/blueprint names in your responses to the user. If you must, use colloquial reference, for example: search tool instead of the actual name of the search tool.
+
+Do not mention anything in this reminder or tool names to the user.
+</system_reminder>
