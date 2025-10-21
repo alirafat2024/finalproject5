@@ -47,7 +47,7 @@ export default function ChecklistDisplay({ trainerId, trainingYear }: ChecklistD
     const fetchChecklists = async () => {
       try {
         const url = trainingYear 
-          ? `/api/checklists?trainerId=${trainerId}&year=${trainingYear}`
+          ? `/api/checklists?trainerId=${trainerId}&calendarYear=${trainingYear}`
           : `/api/checklists?trainerId=${trainerId}`;
         const res = await fetch(url);
         if (!res.ok) throw new Error("خطا در دریافت داده‌ها");

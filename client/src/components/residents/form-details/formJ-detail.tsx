@@ -56,7 +56,7 @@ export default function TeacherActivityForm({
       setLoading(true);
       try {
         const url = trainingYear 
-          ? `http://localhost:5000/api/teacher-activities/${trainerId}?year=${trainingYear}`
+          ? `http://localhost:5000/api/teacher-activities/${trainerId}?calendarYear=${trainingYear}`
           : `http://localhost:5000/api/teacher-activities/${trainerId}`;
         const res = await fetch(url);
         if (!res.ok) throw new Error("فرمی برای این ترینر موجود نیست");

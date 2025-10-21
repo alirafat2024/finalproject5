@@ -49,7 +49,7 @@ export default function FormKDetails({ trainerId, trainingYear, onClose }: FormK
       try {
         setLoading(true);
         const url = trainingYear 
-          ? `/api/monographEvaluation?trainerId=${trainerId}&year=${trainingYear}`
+          ? `/api/monographEvaluation?trainerId=${trainerId}&calendarYear=${trainingYear}`
           : `/api/monographEvaluation?trainerId=${trainerId}`;
         const res = await fetch(url);
         if (!res.ok) throw new Error("فرمی برای این ترینر موجود نیست");

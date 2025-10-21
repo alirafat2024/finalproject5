@@ -50,7 +50,7 @@ export default function FormGDetails({ trainerId, trainingYear, onClose }: FormG
       try {
         setLoading(true);
         const url = trainingYear 
-          ? `/api/evaluationFormG?trainerId=${trainerId}&year=${trainingYear}`
+          ? `/api/evaluationFormG?trainerId=${trainerId}&calendarYear=${trainingYear}`
           : `/api/evaluationFormG?trainerId=${trainerId}`;
         const res = await fetch(url);
         if (res.status === 404) {

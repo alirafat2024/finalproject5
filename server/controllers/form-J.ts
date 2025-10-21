@@ -43,14 +43,21 @@ export const createTeacherActivity = async (req: Request, res: Response) => {
 export const getSingleTeacherActivityByTrainer = async (req: Request, res: Response) => {
   try {
     const { trainerId } = req.params;
+    const { calendarYear } = req.query;
 
     if (!trainerId)
       return res.status(400).json({ message: "TrainerId الزامی است" });
 
-    // ✅ فقط اولین فرم ثبت شده برای این ترینر
-    const form = await TeacherActivityModel.findOne({
+    const filter: any = {
       trainerId: new mongoose.Types.ObjectId(trainerId),
-    }).sort({ createdAt: -1 });
+    };
+    
+    if (calendarYear) {
+      filter.calendarYear = calendarYear as string;
+    }
+
+    // ✅ فقط اولین فرم ثبت شده برای این ترینر
+    const form = await TeacherActivityModel.findOne(filter).sort({ createdAt: -1 });
 
     if (!form)
       return res.status(404).json({ message: "فرمی برای این ترینر موجود نیست" });

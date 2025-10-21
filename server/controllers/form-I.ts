@@ -43,14 +43,21 @@ export const createRotationForm = async (req: Request, res: Response) => {
 export const getRotationForms = async (req: Request, res: Response) => {
   try {
     const { trainerId } = req.params;
+    const { calendarYear } = req.query;
 
     if (!trainerId) {
       return res.status(400).json({ message: "TrainerId الزامی است" });
     }
 
-    const forms = await RotationForm.find({
+    const filter: any = {
       trainerId: new mongoose.Types.ObjectId(trainerId),
-    }).sort({ createdAt: -1 });
+    };
+    
+    if (calendarYear) {
+      filter.calendarYear = calendarYear as string;
+    }
+
+    const forms = await RotationForm.find(filter).sort({ createdAt: -1 });
 
     res.json(forms);
   } catch (err) {

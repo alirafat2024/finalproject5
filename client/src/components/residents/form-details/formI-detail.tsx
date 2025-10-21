@@ -64,7 +64,7 @@ export default function RotationFormView({ trainerId, trainingYear }: RotationFo
     const fetchData = async () => {
       try {
         const url = trainingYear 
-          ? `http://localhost:5000/api/rotation-form/${trainerId}?year=${trainingYear}`
+          ? `http://localhost:5000/api/rotation-form/${trainerId}?calendarYear=${trainingYear}`
           : `http://localhost:5000/api/rotation-form/${trainerId}`;
         const res = await fetch(url);
         if (!res.ok) throw new Error("فرمی برای این ترینر موجود نیست");

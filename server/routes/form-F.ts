@@ -41,13 +41,20 @@ router.post("/", async (req: Request, res: Response) => {
 router.get("/", async (req: Request, res: Response) => {
   try {
     const trainerId = req.query.trainerId as string;
+    const calendarYear = req.query.calendarYear as string;
 
     if (!trainerId)
       return res.status(400).json({ error: "TrainerId الزامی است" });
 
-    const forms = await Checklist.find({
+    const filter: any = {
       trainerId: new mongoose.Types.ObjectId(trainerId),
-    }).sort({ createdAt: -1 });
+    };
+    
+    if (calendarYear) {
+      filter.calendarYear = calendarYear;
+    }
+
+    const forms = await Checklist.find(filter).sort({ createdAt: -1 });
 
     res.json(forms);
   } catch (err) {

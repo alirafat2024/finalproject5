@@ -44,7 +44,7 @@ export default function FormHDetails({ trainerId, trainingYear, onClose }: FormH
       try {
         setLoading(true);
         const url = trainingYear 
-          ? `/api/evaluationFormH?trainerId=${trainerId}&year=${trainingYear}`
+          ? `/api/evaluationFormH?trainerId=${trainerId}&calendarYear=${trainingYear}`
           : `/api/evaluationFormH?trainerId=${trainerId}`;
         const res = await fetch(url);
         if (!res.ok) throw new Error("خطا در دریافت فرم H");

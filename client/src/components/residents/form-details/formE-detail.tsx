@@ -37,7 +37,7 @@ export default function FormEDetails({ trainerId, trainingYear, onClose }: FormE
       try {
         setLoading(true);
         const url = trainingYear 
-          ? `/api/evaluationFormE?trainerId=${trainerId}&year=${trainingYear}`
+          ? `/api/evaluationFormE?trainerId=${trainerId}&calendarYear=${trainingYear}`
           : `/api/evaluationFormE?trainerId=${trainerId}`;
         const res = await fetch(url);
         if (!res.ok) throw new Error("خطا در دریافت داده‌ها");

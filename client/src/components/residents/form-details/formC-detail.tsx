@@ -49,7 +49,7 @@ export default function FormCDetails({
       try {
         setLoading(true);
         const url = trainingYear 
-          ? `/api/monograph?trainerId=${trainerId}&year=${trainingYear}`
+          ? `/api/monograph?trainerId=${trainerId}&calendarYear=${trainingYear}`
           : `/api/monograph?trainerId=${trainerId}`;
         const res = await fetch(url);
 

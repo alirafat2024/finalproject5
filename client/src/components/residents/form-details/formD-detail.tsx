@@ -42,7 +42,7 @@ export default function FormDDetails({ trainerId, trainingYear, onClose }: FormD
       try {
         setLoading(true);
         const url = trainingYear 
-          ? `/api/conference?trainerId=${trainerId}&year=${trainingYear}`
+          ? `/api/conference?trainerId=${trainerId}&calendarYear=${trainingYear}`
           : `/api/conference?trainerId=${trainerId}`;
         const res = await fetch(url);
         if (!res.ok) throw new Error("فرمی برای این ترینر موجود نیست");
