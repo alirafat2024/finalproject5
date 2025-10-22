@@ -63,73 +63,209 @@ async function seedDatabase() {
   }
   
   try {
-    const { ResidentModel, TeacherModel } = await import('./models');
+    const { ResidentModel, TeacherModel, TrainerModel, TrainerProgress } = await import('./models');
     
-    // Check if data already exists
-    const residentCount = await ResidentModel.countDocuments();
-    const teacherCount = await TeacherModel.countDocuments();
-    
-    if (residentCount === 0) {
-      // Seed residents
-      const residents = [
-        {
-          fullName: "Dr. Sarah Johnson",
-          age: 28,
-          gender: "Female",
-          department: "Internal Medicine",
-          startDate: new Date("2024-01-15"),
-          status: "active"
-        },
-        {
-          fullName: "Dr. Michael Chen",
-          age: 29,
-          gender: "Male", 
-          department: "Surgery",
-          startDate: new Date("2024-02-01"),
-          status: "active"
-        },
-        {
-          fullName: "Dr. Emily Rodriguez",
-          age: 27,
-          gender: "Female",
-          department: "Pediatrics", 
-          startDate: new Date("2024-03-10"),
-          status: "active"
-        }
-      ];
-      
-      await ResidentModel.insertMany(residents);
-      console.log('Sample residents data seeded successfully');
+    // Seed residents
+    try {
+      const residentCount = await ResidentModel.countDocuments();
+      if (residentCount === 0) {
+        const residents = [
+          {
+            fullName: "Dr. Sarah Johnson",
+            age: 28,
+            gender: "Female",
+            department: "Internal Medicine",
+            startDate: new Date("2024-01-15"),
+            status: "active"
+          },
+          {
+            fullName: "Dr. Michael Chen",
+            age: 29,
+            gender: "Male", 
+            department: "Surgery",
+            startDate: new Date("2024-02-01"),
+            status: "active"
+          },
+          {
+            fullName: "Dr. Emily Rodriguez",
+            age: 27,
+            gender: "Female",
+            department: "Pediatrics", 
+            startDate: new Date("2024-03-10"),
+            status: "active"
+          }
+        ];
+        
+        await ResidentModel.insertMany(residents);
+        console.log('Sample residents data seeded successfully');
+      }
+    } catch (error) {
+      console.error('Error seeding residents:', error);
     }
     
-    if (teacherCount === 0) {
-      // Seed teachers
-      const teachers = [
+    // Seed teachers (skip errors)
+    try {
+      const teacherCount = await TeacherModel.countDocuments();
+      if (teacherCount === 0) {
+        const teachers = [
+          {
+            fullName: "Dr. Robert Williams",
+            email: "r.williams@hospital.com",
+            phone: "555-0101",
+            department: "Internal Medicine",
+            academicRank: "Professor",
+            appointmentDate: new Date("2015-08-01"),
+            status: "active"
+          },
+          {
+            fullName: "Dr. Lisa Anderson",
+            email: "l.anderson@hospital.com", 
+            phone: "555-0102",
+            department: "Surgery",
+            academicRank: "Associate Professor",
+            appointmentDate: new Date("2018-09-15"),
+            status: "active"
+          }
+        ];
+        
+        await TeacherModel.insertMany(teachers);
+        console.log('Sample teachers data seeded successfully');
+      }
+    } catch (error) {
+      console.error('Error seeding teachers:', error);
+    }
+    
+    // Seed trainers
+    try {
+      const trainerCount = await TrainerModel.countDocuments();
+      if (trainerCount === 0) {
+      // Seed trainers with TrainerProgress
+      const currentYear = new Date().getFullYear();
+      const academicYear = `${currentYear}-${currentYear + 1}`;
+      
+      const trainers = [
         {
-          fullName: "Dr. Robert Williams",
-          email: "r.williams@hospital.com",
-          phone: "555-0101",
-          department: "Internal Medicine",
-          academicRank: "Professor",
-          appointmentDate: new Date("2015-08-01"),
-          status: "active"
+          id: "T001",
+          name: "احمد",
+          lastName: "احمدی",
+          parentType: "پدر",
+          parentName: "محمد",
+          gender: "مرد",
+          province: "کابل",
+          department: "طب داخلی",
+          specialty: "قلب و عروق",
+          hospital: "شفاخانه جمهوریت",
+          joiningDate: new Date(currentYear, 0, 15),
+          trainingYear: "سال اول",
+          supervisorName: "دوکتور رحیمی",
+          birthDate: new Date(1995, 5, 10),
+          idNumber: "1234567890",
+          phoneNumber: "0700123456",
+          whatsappNumber: "0700123456",
+          email: "ahmad@example.com",
+          postNumberAndCode: "1001",
+          appointmentType: "رقابت آزاد",
+          status: "برحال"
         },
         {
-          fullName: "Dr. Lisa Anderson",
-          email: "l.anderson@hospital.com", 
-          phone: "555-0102",
-          department: "Surgery",
-          academicRank: "Associate Professor",
-          appointmentDate: new Date("2018-09-15"),
-          status: "active"
+          id: "T002",
+          name: "فاطمه",
+          lastName: "فاطمی",
+          parentType: "پدر",
+          parentName: "علی",
+          gender: "زن",
+          province: "هرات",
+          department: "اطفال",
+          specialty: "طب اطفال",
+          hospital: "شفاخانه حیات",
+          joiningDate: new Date(currentYear, 1, 1),
+          trainingYear: "سال اول",
+          supervisorName: "دوکتور نوری",
+          birthDate: new Date(1996, 3, 15),
+          idNumber: "0987654321",
+          phoneNumber: "0700234567",
+          whatsappNumber: "0700234567",
+          email: "fatima@example.com",
+          postNumberAndCode: "2001",
+          appointmentType: "داوطلب",
+          status: "برحال"
+        },
+        {
+          id: "T003",
+          name: "حسن",
+          lastName: "حسنی",
+          parentType: "پدر",
+          parentName: "حسین",
+          gender: "مرد",
+          province: "بلخ",
+          department: "جراحی",
+          specialty: "جراحی عمومی",
+          hospital: "شفاخانه بلخی",
+          joiningDate: new Date(currentYear - 1, 0, 10),
+          trainingYear: "سال دوم",
+          supervisorName: "دوکتور کریمی",
+          birthDate: new Date(1994, 7, 20),
+          idNumber: "1122334455",
+          phoneNumber: "0700345678",
+          whatsappNumber: "0700345678",
+          email: "hassan@example.com",
+          postNumberAndCode: "3001",
+          appointmentType: "حکمی",
+          status: "برحال"
         }
       ];
       
-      await TeacherModel.insertMany(teachers);
-      console.log('Sample teachers data seeded successfully');
+      const createdTrainers = await TrainerModel.insertMany(trainers);
+      console.log('Sample trainers data seeded successfully');
+      
+      // Create TrainerProgress for each trainer
+      for (let i = 0; i < createdTrainers.length; i++) {
+        const trainer = createdTrainers[i];
+        const isSecondYear = i === 2; // Third trainer is in second year
+        
+        const progress = {
+          trainer: trainer._id,
+          startYear: isSecondYear ? `${currentYear - 1}` : `${currentYear}`,
+          currentTrainingYear: isSecondYear ? "سال دوم" : "سال اول",
+          trainingHistory: isSecondYear ? [
+            {
+              yearLabel: "سال اول",
+              academicYear: `${currentYear - 1}-${currentYear}`,
+              startYear: `${currentYear - 1}`,
+              endYear: `${currentYear}`,
+              status: "ختم شده",
+              forms: {}
+            },
+            {
+              yearLabel: "سال دوم",
+              academicYear: `${currentYear}-${currentYear + 1}`,
+              startYear: `${currentYear}`,
+              status: "در حال آموزش",
+              forms: {}
+            }
+          ] : [
+            {
+              yearLabel: "سال اول",
+              academicYear: academicYear,
+              startYear: `${currentYear}`,
+              status: "در حال آموزش",
+              forms: {}
+            }
+          ],
+          promoted: false,
+          lastUpdated: new Date()
+        };
+        
+        await TrainerProgress.create(progress);
+      }
+      
+      console.log('Sample trainer progress data seeded successfully');
+      }
+    } catch (error) {
+      console.error('Error seeding trainers:', error);
     }
   } catch (error) {
-    console.error('Error seeding database:', error);
+    console.error('Error in seedDatabase function:', error);
   }
 }
 
