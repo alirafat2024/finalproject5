@@ -388,7 +388,10 @@ export const TrainerController = {
       if (!trainer) return res.status(404).json({ message: "ترینر یافت نشد." });
 
       const progress = await TrainerProgress.findOne({ trainer: trainer._id }).lean<IProgressLean>().exec();
-      return res.status(200).json({ trainer, trainerProgress: progress || null });
+      
+      // ترکیب trainer و progress (consistent با getAllTrainersWithProgress)
+      const trainerWithProgress = { ...trainer, trainerProgress: progress || null };
+      return res.status(200).json(trainerWithProgress);
     } catch (error: any) {
       console.error("Error fetching trainer:", error);
       return res.status(500).json({ message: "خطا در دریافت ترینر", error: error.message });
