@@ -85,3 +85,14 @@
   - Login page verified and displaying correctly
   - All import tasks completed and marked as done
   - Import migration to Replit environment completed successfully
+[x] 24. Fixed Trainer Promotion Issue - October 22, 2025:
+  - Identified root cause: Trainers created before the progress tracking system lacked TrainerProgress records
+  - Modified promoteTrainerYear function to automatically create initial progress record if missing
+  - When progress record doesn't exist, system now:
+    - Creates initial progress record with "سال اول" (Year 1)
+    - Creates all required forms (FormC through FormK) with proper initial data
+    - Sets up complete training history structure
+    - Then proceeds with normal promotion logic
+  - Removed duplicate trainer fetching code for better performance
+  - Server restarted successfully with no errors
+  - Trainer promotion now works for both new and legacy trainers

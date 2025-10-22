@@ -438,8 +438,83 @@ export const TrainerController = {
       const { nextYear } = req.body;
       if (!nextYear) return res.status(400).json({ message: "سال آموزشی لازم است." });
 
-      const progress = await TrainerProgress.findOne({ trainer: new Types.ObjectId(mongoId) }).exec();
-      if (!progress) return res.status(404).json({ message: "پیشرفت ترینر یافت نشد." });
+      // بررسی وجود ترینر
+      const trainer = await TrainerModel.findById(mongoId).exec();
+      if (!trainer) return res.status(404).json({ message: "ترینر یافت نشد." });
+
+      let progress = await TrainerProgress.findOne({ trainer: new Types.ObjectId(mongoId) }).exec();
+      
+      // اگر رکورد پیشرفت وجود نداشت، یکی بسازیم
+      if (!progress) {
+        console.log(`ℹ️ Creating initial progress record for trainer ${mongoId}`);
+        const currentYear = new Date().getFullYear().toString();
+        
+        // ساخت فرم‌های اولیه برای سال اول
+        const formModels = [FormC, FormD, FormE, FormF, FormG, FormH, FormI, FormJ, FormK];
+        const initialFormsMap: Record<string, Types.ObjectId> = {};
+        
+        for (let i = 0; i < formModels.length; i++) {
+          const formKey = `form${String.fromCharCode(67 + i)}`;
+          const formIndex = i;
+          
+          const baseData: any = { 
+            trainer: mongoId,
+            trainerId: mongoId, 
+            year: "سال اول",
+            calendarYear: currentYear,
+            trainingYear: "سال اول",
+            name: trainer.name || "",
+            lastName: trainer.lastName || "",
+            parentType: trainer.parentType || "",
+            parentName: trainer.parentName || "",
+            department: trainer.department || "",
+            idNumber: trainer.idNumber || "",
+          };
+          
+          let formData: any = { ...baseData };
+          
+          if (formIndex === 0) { // FormC
+            formData = { ...baseData, startYear: currentYear, date: new Date().toISOString().split('T')[0], chef: "", departmentHead: "", hospitalHead: "", evaluations: [] };
+          } else if (formIndex === 1) { // FormD
+            formData = { ...baseData, conferences: [] };
+          } else if (formIndex === 2) { // FormE
+            formData = { ...baseData, Name: trainer.name || "", incidentTitle: "", date: new Date().toISOString().split('T')[0], scores: [], averageScore: "0" };
+          } else if (formIndex === 3) { // FormF
+            formData = { ...baseData, sections: [] };
+          } else if (formIndex === 4) { // FormG
+            formData = { ...baseData, personalInfo: { Name: trainer.name || "", parentType: trainer.parentType || "", trainingYear: "سال اول", year: currentYear, calendarYear: currentYear, department: trainer.department || "" }, scores: [], averageScore: 0 };
+          } else if (formIndex === 5) { // FormH
+            formData = { ...baseData, Name: trainer.name || "", trainingYears: [], averageScore: 0, shiftDepartment: "", programDirector: "" };
+          } else if (formIndex === 6) { // FormI
+            formData = { ...baseData, header: { name: trainer.name || "", parentType: trainer.parentType || "", parentName: trainer.parentName || "", department: trainer.department || "", trainingYear: "سال اول", rotationName: "", rotationFrom: "", rotationTo: "", date: new Date().toISOString().split('T')[0] }, persianRows: [], rows: [] };
+          } else if (formIndex === 7) { // FormJ
+            formData = { ...baseData, teachers: [], activities: [] };
+          } else if (formIndex === 8) { // FormK
+            formData = { ...baseData, startYear: currentYear, date: new Date().toISOString().split('T')[0], chef: "", departmentHead: "", hospitalHead: "", evaluations: [] };
+          }
+          
+          const formDoc = await (formModels[i] as any).create(formData);
+          initialFormsMap[formKey] = formDoc._id;
+        }
+
+        const firstYear: ITrainingYearRecord = {
+          yearLabel: "سال اول",
+          academicYear: currentYear,
+          startYear: currentYear,
+          status: "در حال آموزش",
+          forms: initialFormsMap,
+        };
+
+        progress = await TrainerProgress.create({
+          trainer: mongoId,
+          startYear: currentYear,
+          currentTrainingYear: "سال اول",
+          trainingHistory: [firstYear],
+          promoted: false,
+        });
+        
+        console.log(`✅ Initial progress record created for trainer ${mongoId}`);
+      }
 
       if (progress.currentTrainingYear === nextYear)
         return res.status(400).json({ message: "شما قبلاً در همین سال هستید." });
@@ -455,10 +530,6 @@ export const TrainerController = {
 
       const lastAcademic = progress.trainingHistory.at(-1)?.academicYear || new Date().getFullYear().toString();
       const nextAcademic = (Number(lastAcademic) + 1).toString();
-
-      // دریافت اطلاعات ترینر برای پاس کردن به فرم‌ها
-      const trainer = await TrainerModel.findById(mongoId).exec();
-      if (!trainer) return res.status(404).json({ message: "ترینر یافت نشد." });
 
       // ایجاد فرم‌های خالی برای سال بعد
       const formModels = [FormC, FormD, FormE, FormF, FormG, FormH, FormI, FormJ, FormK];
