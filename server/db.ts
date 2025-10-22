@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+
+let mongoServer: MongoMemoryServer | null = null;
 
 // MongoDB connection string - prioritize environment variable first
 let MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/hospital-residents';
@@ -7,7 +10,7 @@ let MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/hospital
 if (process.env.DATABASE_URL && process.env.DATABASE_URL.includes('mongodb')) {
   MONGODB_URI = process.env.DATABASE_URL;
 } else if (process.env.DATABASE_URL && process.env.DATABASE_URL.includes('postgresql')) {
-  console.log('PostgreSQL DATABASE_URL detected, using MongoDB URI for hospital data');
+  console.log('PostgreSQL DATABASE_URL detected, using in-memory MongoDB for hospital data');
 }
 
 let isConnected = false;
@@ -19,6 +22,7 @@ export async function connectDB() {
   }
   
   try {
+    // Try to connect to regular MongoDB first
     await mongoose.connect(MONGODB_URI, {
       serverSelectionTimeoutMS: 5000, // 5 second timeout
       socketTimeoutMS: 45000,
@@ -27,12 +31,26 @@ export async function connectDB() {
     console.log('Connected to MongoDB successfully at:', MONGODB_URI);
     await seedDatabase();
   } catch (error) {
-    console.warn('MongoDB connection failed, using in-memory fallback:', (error as Error).message);
-    console.log('To connect to MongoDB Atlas, set MONGODB_URI environment variable');
-    // Initialize in-memory data for demo
-    await initializeInMemoryData();
-    // Re-throw the error so storage.ts knows MongoDB failed
-    throw error;
+    console.warn('MongoDB connection failed, starting in-memory MongoDB server:', (error as Error).message);
+    
+    try {
+      // Start MongoDB Memory Server
+      mongoServer = await MongoMemoryServer.create();
+      const uri = mongoServer.getUri();
+      
+      await mongoose.connect(uri, {
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 45000,
+      });
+      
+      isConnected = true;
+      console.log('Connected to in-memory MongoDB successfully at:', uri);
+      await seedDatabase();
+    } catch (memError) {
+      console.error('Failed to start in-memory MongoDB:', (memError as Error).message);
+      await initializeInMemoryData();
+      throw memError;
+    }
   }
 }
 
