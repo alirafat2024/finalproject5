@@ -169,6 +169,7 @@ const ChecklistForm: React.FC<checklistsProps> = ({ trainerIdProp }) => {
         sectionTotal: calculateSectionTotal(sec),
       })),
       overallTotal: calculateOverallTotal(),
+      calendarYear: trainingYear || new Date().getFullYear().toString(), // 🔹 اضافه شد برای فیلتر کردن فورم بر اساس سال
     };
 
     try {

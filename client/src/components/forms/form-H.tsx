@@ -142,6 +142,7 @@ export default function EvaluationFormH({
       averageScore: averageScore.trim(),
       shiftDepartment: shiftDepartment.trim(),
       programDirector: programDirector.trim(),
+      calendarYear: new Date().getFullYear().toString(), // 🔹 اضافه شد برای فیلتر کردن فورم بر اساس سال
     };
 
     console.log("📤 ارسال فرم:", payload);

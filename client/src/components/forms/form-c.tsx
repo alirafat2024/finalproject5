@@ -149,6 +149,7 @@ export default function MonographEvaluationFormC({
       departmentHead,
       hospitalHead,
       evaluations,
+      calendarYear: startYear, // 🔹 اضافه شد برای فیلتر کردن فورم بر اساس سال
     };
 
     try {

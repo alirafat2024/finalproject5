@@ -150,6 +150,7 @@ const RotationForm: React.FC<ChecklistsProps> = ({ trainerIdProp }) => {
       persianRows,
       persianNote,
       rows,
+      calendarYear: header.trainingYear || new Date().getFullYear().toString(), // 🔹 اضافه شد برای فیلتر کردن فورم بر اساس سال
     };
 
     console.log("📦 ارسال به سرور:", payload);

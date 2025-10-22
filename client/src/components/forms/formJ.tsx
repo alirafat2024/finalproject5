@@ -144,6 +144,7 @@ export default function TeacherActivityForm({
       trainingYear,
       teachers: nonEmptyTeachers,
       activities: data,
+      calendarYear: trainingYear || new Date().getFullYear().toString(), // 🔹 اضافه شد برای فیلتر کردن فورم بر اساس سال
     };
 
     try {

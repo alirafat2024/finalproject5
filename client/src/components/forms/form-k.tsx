@@ -249,6 +249,7 @@ export default function MonographEvaluationForm({
         average: (e.average || "").trim(),
         notes: (e.notes || "").trim(),
       })),
+      calendarYear: personalInfo.startYear.trim(), // 🔹 اضافه شد برای فیلتر کردن فورم بر اساس سال
     };
 
     try {

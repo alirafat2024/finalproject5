@@ -195,6 +195,7 @@ export default function EvaluationFormG({
       trainer: trainerId,
       personalInfo,
       scores: numericScores,
+      calendarYear: personalInfo.year, // 🔹 اضافه شد برای فیلتر کردن فورم بر اساس سال
     };
 
     try {

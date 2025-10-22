@@ -133,6 +133,7 @@ export default function EvaluationFormE({
         score: r.score.trim(),
         teacherName: r.teacherName.trim(),
       })),
+      calendarYear: trainingYear.trim(), // 🔹 اضافه شد برای فیلتر کردن فورم بر اساس سال
     };
 
     console.log("📤 ارسال فرم:", payload);

@@ -131,6 +131,7 @@ const [trainerId, setTrainerId] = useState<string | null>(null);
       department,
       trainingYear,
       conferences,
+      calendarYear: year, // 🔹 اضافه شد برای فیلتر کردن فورم بر اساس سال
     };
 
     console.log("📤 ارسال داده:", payload);
