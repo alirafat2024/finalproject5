@@ -6,7 +6,7 @@ import RotationForm from "../models/form-I";
 // ✅ ایجاد فرم جدید
 export const createRotationForm = async (req: Request, res: Response) => {
   try {
-    const { trainerId, header, persianRows, persianNote, rows } = req.body;
+    const { trainerId, header, persianRows, persianNote, rows, calendarYear, year } = req.body;
 
     if (!trainerId) {
       return res.status(400).json({ message: "TrainerId الزامی است" });
@@ -23,12 +23,16 @@ export const createRotationForm = async (req: Request, res: Response) => {
        return res.status(400).json({ message: "این فرم برای این ترینر قبلاً ثبت شده است." });
      }
 
+    // 🔹 اگر calendarYear ارسال نشده، از year استفاده کن
+    const finalCalendarYear = calendarYear || year || new Date().getFullYear().toString();
+
     const newForm = new RotationForm({
       trainerId: new mongoose.Types.ObjectId(trainerId),
       header,
       persianRows,
       persianNote,
       rows,
+      calendarYear: finalCalendarYear,
     });
 
     const savedForm = await newForm.save();

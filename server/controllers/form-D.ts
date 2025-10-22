@@ -14,6 +14,7 @@ export class ConferenceEvaluationController {
         department,
         trainingYear,
         conferences,
+        calendarYear,
       } = req.body;
 
       if (!trainer) {
@@ -22,7 +23,8 @@ export class ConferenceEvaluationController {
           .json({ message: "Trainer ID خالی است و فرم ذخیره نمی‌شود." });
       }
 
-       
+      // 🔹 اگر calendarYear ارسال نشده، از year استفاده کن
+      const finalCalendarYear = calendarYear || year;
 
       const newEvaluation = new ConferenceEvaluation({
         trainer: new mongoose.Types.ObjectId(trainer),
@@ -31,6 +33,7 @@ export class ConferenceEvaluationController {
         parentType,
         department,
         trainingYear,
+        calendarYear: finalCalendarYear,
         conferences,
       });
 

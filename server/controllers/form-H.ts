@@ -16,6 +16,8 @@ export class EvaluationFormHController {
         averageScore,
         shiftDepartment,
         programDirector,
+        calendarYear,
+        year,
       } = req.body;
 
       if (!trainer) {
@@ -24,6 +26,8 @@ export class EvaluationFormHController {
 
       // 🔹 بررسی وجود فرم قبلی برای همین Trainer
         
+      // 🔹 اگر calendarYear ارسال نشده، از year استفاده کن
+      const finalCalendarYear = calendarYear || year || new Date().getFullYear().toString();
 
       const form = new EvaluationFormH({
         trainer: new mongoose.Types.ObjectId(trainer),
@@ -34,6 +38,7 @@ export class EvaluationFormHController {
         averageScore,
         shiftDepartment,
         programDirector,
+        calendarYear: finalCalendarYear,
       });
 
       await form.save();

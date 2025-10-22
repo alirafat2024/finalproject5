@@ -7,7 +7,7 @@ export class EvaluationFormGController {
   // 🔹 ایجاد فرم جدید
   static async create(req: Request, res: Response) {
     try {
-      const { trainer, personalInfo, scores } = req.body;
+      const { trainer, personalInfo, scores, calendarYear } = req.body;
 
       if (!trainer) {
         return res.status(400).json({ message: "Trainer ID الزامی است" });
@@ -21,11 +21,15 @@ export class EvaluationFormGController {
       const totalSum = filledRows.reduce((sum: number, row: any) => sum + (Number(row.total) || 0), 0);
       const averageScore = totalSum / filledRows.length;
 
+      // 🔹 اگر calendarYear ارسال نشده، از personalInfo.calendarYear یا personalInfo.year استفاده کن
+      const finalCalendarYear = calendarYear || personalInfo?.calendarYear || personalInfo?.year || new Date().getFullYear().toString();
+
       const form = new EvaluationFormG({
         trainer: new mongoose.Types.ObjectId(trainer),
         personalInfo,
         scores,
         averageScore,
+        calendarYear: finalCalendarYear,
       });
 
       await form.save();

@@ -16,6 +16,8 @@ export class EvaluationFormEController {
         date,
         scores, // آرایه از نمرات
         averageScore,
+        calendarYear,
+        year,
       } = req.body;
 
       if (!trainer) {
@@ -40,6 +42,10 @@ export class EvaluationFormEController {
           formId: existingForm._id,
         });
       }
+      
+      // 🔹 اگر calendarYear ارسال نشده، از year استفاده کن
+      const finalCalendarYear = calendarYear || year || new Date().getFullYear().toString();
+      
       const form = new EvaluationFormE({
         trainer: new mongoose.Types.ObjectId(trainer),
         Name,
@@ -49,6 +55,7 @@ export class EvaluationFormEController {
         date,
         scores,
         averageScore,
+        calendarYear: finalCalendarYear,
       });
 
       await form.save();

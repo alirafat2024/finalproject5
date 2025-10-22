@@ -6,7 +6,7 @@ import { TeacherActivityModel } from "../models/form-J";
 // ✅ ایجاد فرم جدید
 export const createTeacherActivity = async (req: Request, res: Response) => {
   try {
-    const { trainerId, name, parentType, trainingYear, teachers, activities } = req.body;
+    const { trainerId, name, parentType, trainingYear, teachers, activities, calendarYear, year } = req.body;
 
     if (!trainerId || !name || !parentType || !trainingYear || !teachers || !activities) {
       return res.status(400).json({ message: "تمام فیلدها الزامی‌اند" });
@@ -22,6 +22,9 @@ export const createTeacherActivity = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "این فرم برای این ترینر قبلاً ثبت شده است." });
     }
 
+    // 🔹 اگر calendarYear ارسال نشده، از year استفاده کن
+    const finalCalendarYear = calendarYear || year || new Date().getFullYear().toString();
+
     const newForm = new TeacherActivityModel({
       trainerId: new mongoose.Types.ObjectId(trainerId),
       name,
@@ -29,6 +32,7 @@ export const createTeacherActivity = async (req: Request, res: Response) => {
       trainingYear,
       teachers,
       activities,
+      calendarYear: finalCalendarYear,
     });
 
     const savedForm = await newForm.save();

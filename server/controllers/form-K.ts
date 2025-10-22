@@ -18,12 +18,15 @@ export class MonographEvaluationController {
         startYear,
         date,
         evaluations,
+        calendarYear,
       } = req.body;
 
       if (!trainer) {
         return res.status(400).json({ message: "Trainer ID الزامی است" });
       }
 
+      // 🔹 اگر calendarYear ارسال نشده، از startYear استفاده کن
+      const finalCalendarYear = calendarYear || startYear;
         
       const form = new MonographEvaluation({
         trainer: new mongoose.Types.ObjectId(trainer),
@@ -34,6 +37,7 @@ export class MonographEvaluationController {
         department,
         trainingYear,
         startYear,
+        calendarYear: finalCalendarYear,
         date,
         evaluations,
       });

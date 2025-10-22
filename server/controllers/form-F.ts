@@ -5,7 +5,7 @@ import Checklist from "../models/form-F";
 // 🔹 Create new Form-F (Checklist)
 export const createChecklist = async (req: Request, res: Response) => {
   try {
-    const { trainerId, name, parentType, trainingYear, sections } = req.body;
+    const { trainerId, name, parentType, trainingYear, sections, calendarYear, year } = req.body;
 
     if (!trainerId) 
       return res.status(400).json({ message: "TrainerId الزامی است" });
@@ -13,11 +13,15 @@ export const createChecklist = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "اطلاعات ناقص است" });
     }
 
+    // 🔹 اگر calendarYear ارسال نشده، از year استفاده کن
+    const finalCalendarYear = calendarYear || year || new Date().getFullYear().toString();
+
     const checklist = new Checklist({
       trainerId,
       name,
       parentType,
       trainingYear,
+      calendarYear: finalCalendarYear,
       sections,
     });
 

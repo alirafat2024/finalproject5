@@ -131,10 +131,23 @@
   - All import tasks completed and marked as done
   - Hospital Residents Training Management System ready for use
   - Import migration to Replit environment completed successfully
-[x] 29. Final Import Verification and Completion - October 22, 2025:
-  - Reinstalled all npm packages (597 packages) to resolve cross-env dependency issue
-  - Server workflow restarted and confirmed running successfully on port 5000
-  - Vite development server connected and operational
+[x] 29. Fixed Form Filtering by Calendar Year Issue - October 22, 2025:
+  - Identified issue: Forms created manually were not setting calendarYear field
+  - Backend filtered by calendarYear but forms only saved trainingYear
+  - Updated all form controllers (C through K) to include calendarYear when creating forms:
+    - Form C (MonographController): Added calendarYear with fallback to startYear
+    - Form D (ConferenceEvaluationController): Added calendarYear with fallback to year
+    - Form E (EvaluationFormEController): Added calendarYear with fallback to year or current year
+    - Form F (Checklist): Added calendarYear with fallback to year or current year
+    - Form G (EvaluationFormGController): Added calendarYear with fallback to personalInfo.year
+    - Form H (EvaluationFormHController): Added calendarYear with fallback to year or current year
+    - Form I (RotationForm): Added calendarYear with fallback to year or current year
+    - Form J (TeacherActivityModel): Added calendarYear with fallback to year or current year
+    - Form K (MonographEvaluationController): Added calendarYear with fallback to startYear
+  - Now when users create forms manually, calendarYear is automatically set from available year data
+  - Forms now properly display when filtered by training year in TrainerDetails component
+  - Server restarted successfully and running without errors on port 5000
+  - Form filtering by year now fully functional
   - Screenshot verification completed - Login page displaying correctly in Persian/Pashto
   - Application fully functional with in-memory MongoDB storage fallback
   - All core features operational and tested

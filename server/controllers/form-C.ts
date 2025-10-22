@@ -20,6 +20,7 @@ export class MonographController {
         chef,
         departmentHead,
         hospitalHead,
+        calendarYear,
       } = req.body;
 
       // 🔹 بررسی شناسه ترینر
@@ -85,6 +86,9 @@ export class MonographController {
       }
 
       // ✅ ایجاد فرم جدید
+      // 🔹 اگر calendarYear ارسال نشده، از startYear استفاده کن
+      const finalCalendarYear = calendarYear || startYear;
+      
       const newForm = new MonographEvaluationForm({
         trainer: new mongoose.Types.ObjectId(trainer),
         name,
@@ -94,6 +98,7 @@ export class MonographController {
         department,
         trainingYear,
         startYear,
+        calendarYear: finalCalendarYear,
         date,
         chef,
         departmentHead,
