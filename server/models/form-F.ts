@@ -52,9 +52,9 @@ const ChecklistSchema = new Schema<IChecklist>({
     required: true,
   },
   name: { type: String, required: true },
-  parentType: { type: String, required: true },
+  parentType: { type: String, default: "" },
   trainingYear: { type: String, required: true },
-  sections: { type: [SectionSchema], required: true },
+  sections: { type: [SectionSchema], default: [] },
 });
 
 export default mongoose.model<IChecklist>("Checklist", ChecklistSchema);

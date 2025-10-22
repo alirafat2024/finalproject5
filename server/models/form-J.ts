@@ -45,7 +45,7 @@ const TeacherActivitySchema = new Schema<ITeacherActivity>(
       required: true,
     },
     name: { type: String, required: true },
-    parentType: { type: String, required: true },
+    parentType: { type: String, default: "" },
     trainingYear: { type: String, required: true },
     calendarYear: { type: String, default: "" },
     teachers: {
@@ -54,9 +54,9 @@ const TeacherActivitySchema = new Schema<ITeacherActivity>(
         validator: (arr: string[]) => arr.length <= 5,
         message: "حداکثر ۵ استاد مجاز است",
       },
-      required: true,
+      default: [],
     },
-    activities: { type: [ActivitySchema], required: true },
+    activities: { type: [ActivitySchema], default: [] },
   },
   {
     timestamps: true, // ایجاد فیلدهای createdAt و updatedAt

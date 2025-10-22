@@ -64,7 +64,7 @@ const RotationFormSchema = new Schema<IRotationForm>({
     department: { type: String, default: "" },
     trainingYear: { type: String, required: true },
     calendarYear: { type: String, default: "" },
-    rotationName: { type: String, required: true }, // فقط اینجا
+    rotationName: { type: String, default: "" },
     rotationFrom: { type: String, default: "" },
     rotationTo: { type: String, default: "" },
     date: { type: String, default: "" },
@@ -74,7 +74,5 @@ const RotationFormSchema = new Schema<IRotationForm>({
   rows: [EnglishRowSchema],
   createdAt: { type: Date, default: Date.now },
 });
-// ✅ محدود کردن یک فرم برای هر ترینر
-RotationFormSchema.index({ trainerId: 1 }, { unique: true });
 
 export default mongoose.model<IRotationForm>("RotationForm", RotationFormSchema);

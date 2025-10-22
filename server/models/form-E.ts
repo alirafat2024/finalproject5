@@ -16,11 +16,11 @@ const EvaluationFormESchema = new Schema<IEvaluationFormE>(
   {
     trainer: { type: Schema.Types.ObjectId, ref: "Trainer", required: true },
     Name: { type: String, required: true },
-    parentType: { type: String, required: true },
+    parentType: { type: String, default: "" },
     trainingYear: { type: String, required: true },
     calendarYear: { type: String, default: "" },
-    incidentTitle: { type: String, required: true },
-    date: { type: String, required: true },
+    incidentTitle: { type: String, default: "" },
+    date: { type: String, default: "" },
     scores: [
       {
         score: { type: String, default: "" },

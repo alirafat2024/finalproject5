@@ -42,11 +42,11 @@ const ScoreRowSchema = new Schema<IScoreRow>({
 
 const PersonalInfoSchema = new Schema<IPersonalInfo>({
   Name: { type: String, required: true },
-  parentType: { type: String, required: true },
+  parentType: { type: String, default: "" },
   trainingYear: { type: String, required: true },
-  year: { type: String, required: true },
+  year: { type: String, default: "" },
   calendarYear: { type: String, default: "" },
-  department: { type: String, required: true },
+  department: { type: String, default: "" },
 });
 
 const EvaluationFormGSchema = new Schema<IEvaluationFormG>(
@@ -57,7 +57,7 @@ const EvaluationFormGSchema = new Schema<IEvaluationFormG>(
       required: true,
     },
     personalInfo: { type: PersonalInfoSchema, required: true },
-    scores: { type: [ScoreRowSchema], required: true },
+    scores: { type: [ScoreRowSchema], default: [] },
     averageScore: { type: Number, default: 0 },
   },
   { timestamps: true }
