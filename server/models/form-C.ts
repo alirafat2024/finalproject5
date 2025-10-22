@@ -50,9 +50,9 @@ const MonographEvaluationFormSchema: Schema = new Schema(
     startYear: { type: String, required: true },
     calendarYear: { type: String, default: "" },
     date: { type: String, required: true },
-    chef: { type: String, required: true },
-    departmentHead: { type: String, required: true },
-    hospitalHead: { type: String, required: true },
+    chef: { type: String, default: "" },
+    departmentHead: { type: String, default: "" },
+    hospitalHead: { type: String, default: "" },
     evaluations: [MonographEvaluationItemSchema], // آرایه ارزیابی‌ها
   },
   {
