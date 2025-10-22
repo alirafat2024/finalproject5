@@ -58,7 +58,7 @@ export default function FormDDetails({ trainerId, trainingYear, onClose }: FormD
       }
     };
     if (trainerId) fetchData();
-  }, [trainerId]);
+  }, [trainerId, trainingYear]);
 
   const handlePrint = () => {
     if (!printRef.current) return;

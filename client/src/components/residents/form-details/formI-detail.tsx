@@ -76,7 +76,7 @@ export default function RotationFormView({ trainerId, trainingYear }: RotationFo
       }
     };
     fetchData();
-  }, [trainerId]);
+  }, [trainerId, trainingYear]);
 
   const handlePrint = useReactToPrint({
     content: () => printRef.current,

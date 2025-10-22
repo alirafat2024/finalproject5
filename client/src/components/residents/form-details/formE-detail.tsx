@@ -52,7 +52,7 @@ export default function FormEDetails({ trainerId, trainingYear, onClose }: FormE
       }
     };
     if (trainerId) fetchData();
-  }, [trainerId]);
+  }, [trainerId, trainingYear]);
 
   const handleChangeMainField = (field: keyof FormE, value: string | number) => {
     if (!data) return;

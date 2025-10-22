@@ -261,29 +261,29 @@ export default function TrainerDetails({
         )}
 
         {/* فرم‌ها */}
-        {selectedForm && (
+        {selectedForm && selectedYear && (
           <div className="mt-6">
             <h4 className="font-medium text-slate-900 mb-2">
-              جزئیات فرم {selectedForm}
+              جزئیات فرم {selectedForm} - سال {selectedYear}
             </h4>
 
             {selectedForm === "C" && (
-              <FormCDetails residentId={trainerId} onClose={() => setSelectedForm(null)} />
+              <FormCDetails trainerId={trainerId} trainingYear={selectedYear} onClose={() => setSelectedForm(null)} />
             )}
             {selectedForm === "D" && (
-              <FormDDetails residentId={trainerId} onClose={() => setSelectedForm(null)} />
+              <FormDDetails trainerId={trainerId} trainingYear={selectedYear} onClose={() => setSelectedForm(null)} />
             )}
             {selectedForm === "E" && (
-              <FormEDetails residentId={trainerId} onClose={() => setSelectedForm(null)} />
+              <FormEDetails trainerId={trainerId} trainingYear={selectedYear} onClose={() => setSelectedForm(null)} />
             )}
             {selectedForm === "G" && (
-              <FormGDetails residentId={trainerId} onClose={() => setSelectedForm(null)} />
+              <FormGDetails trainerId={trainerId} trainingYear={selectedYear} onClose={() => setSelectedForm(null)} />
             )}
             {selectedForm === "H" && (
-              <FormHDetails residentId={trainerId} onClose={() => setSelectedForm(null)} />
+              <FormHDetails trainerId={trainerId} trainingYear={selectedYear} onClose={() => setSelectedForm(null)} />
             )}
             {selectedForm === "K" && (
-              <FormKDetails residentId={trainerId} onClose={() => setSelectedForm(null)} />
+              <FormKDetails trainerId={trainerId} trainingYear={selectedYear} onClose={() => setSelectedForm(null)} />
             )}
           </div>
         )}

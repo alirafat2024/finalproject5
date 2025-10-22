@@ -96,3 +96,13 @@
   - Removed duplicate trainer fetching code for better performance
   - Server restarted successfully with no errors
   - Trainer promotion now works for both new and legacy trainers
+[x] 25. Fixed Form Display by Training Year - October 22, 2025:
+  - Fixed TrainerDetails component to pass selectedYear prop to all form components
+  - Updated all form detail components (FormC through FormK) to reload data when trainingYear changes
+  - Modified dependency arrays in all form components to include trainingYear:
+    - FormC, FormD, FormE, FormF, FormG, FormH, FormI, FormJ, FormK
+  - Forms now properly fetch and display data based on selected training year
+  - When user selects a different year, forms automatically refresh with that year's data
+  - Added year indicator in form header to show which year's data is being displayed
+  - Server restarted successfully with hot module replacement working
+  - Year-based form filtering now fully functional

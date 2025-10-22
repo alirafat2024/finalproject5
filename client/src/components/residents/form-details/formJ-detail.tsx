@@ -70,7 +70,7 @@ export default function TeacherActivityForm({
       }
     };
     fetchData();
-  }, [trainerId]);
+  }, [trainerId, trainingYear]);
 
   const handlePrint = useReactToPrint({
     content: () => printRef.current,

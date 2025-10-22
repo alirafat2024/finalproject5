@@ -79,7 +79,7 @@ export default function FormGDetails({ trainerId, trainingYear, onClose }: FormG
       }
     };
     if (trainerId) fetchData();
-  }, [trainerId]);
+  }, [trainerId, trainingYear]);
 
   const handleChangePersonalInfo = (field: keyof PersonalInfo, value: string) => {
     if (!data) return;

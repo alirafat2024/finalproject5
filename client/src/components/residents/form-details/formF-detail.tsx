@@ -62,7 +62,7 @@ export default function ChecklistDisplay({ trainerId, trainingYear }: ChecklistD
       }
     };
     fetchChecklists();
-  }, [trainerId]);
+  }, [trainerId, trainingYear]);
 
   const handlePrint = (id: string) => {
     const printFn = useReactToPrint({

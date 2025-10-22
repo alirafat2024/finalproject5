@@ -59,7 +59,7 @@ export default function FormHDetails({ trainerId, trainingYear, onClose }: FormH
       }
     };
     if (trainerId) fetchData();
-  }, [trainerId]);
+  }, [trainerId, trainingYear]);
 
   const handleFieldChange = (field: keyof FormH, value: string) => {
     if (!data) return;

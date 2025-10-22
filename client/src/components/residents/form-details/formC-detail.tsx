@@ -76,7 +76,7 @@ export default function FormCDetails({
     };
 
     if (trainerId) fetchData();
-  }, [trainerId]);
+  }, [trainerId, trainingYear]);
 
   // 🖨 چاپ
   const handlePrint = () => {

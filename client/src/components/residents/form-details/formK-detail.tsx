@@ -66,7 +66,7 @@ export default function FormKDetails({ trainerId, trainingYear, onClose }: FormK
       }
     };
     if (trainerId) fetchData();
-  }, [trainerId]);
+  }, [trainerId, trainingYear]);
 
   const handleSave = async () => {
     if (!data) return;
