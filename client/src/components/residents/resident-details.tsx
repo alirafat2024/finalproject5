@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -58,18 +58,21 @@ export default function TrainerDetails({
     queryFn: () => fetch(`/api/trainers/${trainerId}`).then((r) => r.json()),
   });
 
-  if (isLoading) return <div>در حال بارگذاری...</div>;
-  if (!trainer) return <div>ترینر پیدا نشد.</div>;
-
   // دریافت لیست سال‌های موجود از trainingHistory
-  const availableYears = trainer.trainerProgress?.trainingHistory?.map(
+  const availableYears = trainer?.trainerProgress?.trainingHistory?.map(
     (history: any) => history.yearLabel
   ) || [];
   
-  // تنظیم سال پیش‌فرض به سال فعلی
-  if (selectedYear === "" && availableYears.length > 0) {
+  // تنظیم سال پیش‌فرض به سال فعلی با useEffect
+// ✅ کد جدید (درست)
+useEffect(() => {
+  if (trainer && selectedYear === "" && availableYears.length > 0) {
     setSelectedYear(trainer.trainerProgress?.currentTrainingYear || availableYears[0]);
   }
+}, [trainer, availableYears.length, selectedYear]);
+
+  if (isLoading) return <div className="flex items-center justify-center p-8">در حال بارگذاری...</div>;
+  if (!trainer) return <div className="flex items-center justify-center p-8 text-red-600">ترینر پیدا نشد.</div>;
 
   return (
     <div className="relative bg-white rounded-lg shadow-lg border border-slate-200 p-6">
